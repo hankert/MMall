@@ -8,6 +8,8 @@ import android.view.View;
 import com.diabin.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
+import com.diabin.latte.ui.launcher.ScrollLauncherTag;
+import com.diabin.latte.util.storage.LattePreference;
 import com.diabin.latte.util.timer.BaseTimerTask;
 import com.diabin.latte.util.timer.ITimerListener;
 
@@ -31,7 +33,11 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
 
     @OnClick(R2.id.tv_launcher_timer)
     void onClickTimerView(){
-         //initTimer();
+        if(mTimer!=null){
+            mTimer.cancel();
+            mTimer=null;
+            checkIsShowScroll();
+        }
     }
 
     private void initTimer(){
@@ -50,6 +56,16 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
               initTimer();
     }
 
+    private void checkIsShowScroll(){
+        if (!LattePreference.getAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name())){
+            start(new LauncherScrollDelegate(), SINGLETASK);
+        }else{
+            // 也应该检查 用户是否登录了app  TODO
+
+        }
+    }
+
+
     @Override
     public void onTimer() {
 
@@ -63,6 +79,7 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener{
                         if(mTimer!=null){
                             mTimer.cancel();
                             mTimer=null;
+                            checkIsShowScroll();
                         }
                     }
                 }
