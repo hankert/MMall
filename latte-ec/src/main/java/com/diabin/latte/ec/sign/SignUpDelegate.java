@@ -16,6 +16,7 @@ import com.diabin.latte.net.callback.IError;
 import com.diabin.latte.net.callback.IFailure;
 import com.diabin.latte.net.callback.ISuccess;
 import com.diabin.latte.util.LatteLogger;
+import com.diabin.latte.util.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,21 +46,22 @@ public class SignUpDelegate extends LatteDelegate{
      */
     @OnClick(R2.id.btn_sign_up)
     void onClickSignUp(){
-//        if (checkForm()){
+        if (checkForm()){
             RestClient.builder()
 //                    .url("http://news.baidu.com/")
                     .loader(getContext())
                     .url("http://10.0.2.2:8080/webTes/TestServlet")
-//                    .params("name", mName.getText().toString())
-//                    .params("email", mEmail.getText().toString())
-//                    .params("phone", mPhone.getText().toString())
-//                    .params("password", mPassword.getText().toString())
-//                    .params("repassword", mRePassWord.getText().toString())
+                    .params("name", mName.getText().toString())
+                    .params("email", mEmail.getText().toString())
+                    .params("phone", mPhone.getText().toString())
+                    .params("password", mPassword.getText().toString())
+                    .params("repassword", mRePassWord.getText().toString())
                     .success(new ISuccess() {
                         @Override
                         public void onSuccess(String response) {
                             Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
                             Log.i("test", response);
+                            Logger.d("test1", response);
                         }
                     })
                     .error(new IError() {
@@ -80,7 +82,7 @@ public class SignUpDelegate extends LatteDelegate{
             Toast.makeText(getContext(), "验证通过", Toast.LENGTH_LONG).show();
         }
 
-//    }
+    }
 
     /**
      * 点击去登录
@@ -88,6 +90,8 @@ public class SignUpDelegate extends LatteDelegate{
     @OnClick(R2.id.tv_link_sign_in)
     void onClickLink(){
         start(new SignInDelegate());
+
+
 
     }
 
@@ -142,6 +146,7 @@ public class SignUpDelegate extends LatteDelegate{
 
     @Override
     public Object setLayout() {
+        Logger.i("ceshi", "logger执行了");
         return R.layout.delegate_sign_up;
     }
 
