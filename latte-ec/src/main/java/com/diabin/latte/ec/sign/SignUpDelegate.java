@@ -1,5 +1,6 @@
 package com.diabin.latte.ec.sign;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -41,6 +42,18 @@ public class SignUpDelegate extends LatteDelegate{
     @BindView(R2.id.et_sign_up_password)
     TextInputEditText mPassword = null;
 
+    private ISignListener mISignListener = null;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener){
+             mISignListener = (ISignListener) activity;
+
+        }
+    }
+
     /**
      * 点击注册
      */
@@ -62,6 +75,8 @@ public class SignUpDelegate extends LatteDelegate{
                             Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
                             Log.i("test", response);
                             Logger.d("test1", response);
+//                            LatteLogger.i("test2", response);这个框架不能用
+                            SignHandler.onSignUp(response, mISignListener);
                         }
                     })
                     .error(new IError() {

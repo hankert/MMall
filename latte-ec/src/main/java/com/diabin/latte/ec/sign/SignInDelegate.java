@@ -1,14 +1,23 @@
 package com.diabin.latte.ec.sign;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Toast;
 
 import com.diabin.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
+import com.diabin.latte.net.RestClient;
+import com.diabin.latte.net.callback.IError;
+import com.diabin.latte.net.callback.IFailure;
+import com.diabin.latte.net.callback.ISuccess;
+import com.diabin.latte.util.LatteLogger;
+import com.diabin.latte.util.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,6 +35,19 @@ public class SignInDelegate extends LatteDelegate {
     @BindView(R2.id.et_sign_in_password)
     TextInputEditText mPassword = null;
 
+
+    private ISignListener mISignListener = null;
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener){
+            mISignListener = (ISignListener) activity;
+
+        }
+    }
+
     /**
      * 登录
      */
@@ -33,7 +55,38 @@ public class SignInDelegate extends LatteDelegate {
     void onClickSignIn(){
 
       if (checkForm()){
+          RestClient.builder()
+//                    .url("http://news.baidu.com/")
+                  .loader(getContext())
+                  .url("http://10.0.2.2:8080/webTes/TestServlet")
+                  .params("email", mEmail.getText().toString())
+                  .params("password", mPassword.getText().toString())
+                  .success(new ISuccess() {
+                      @Override
+                      public void onSuccess(String response) {
+                          Toast.makeText(getContext(),response,Toast.LENGTH_LONG).show();
+                          Log.i("test", response);
+                          Logger.d("test1", response);
+//                            LatteLogger.i("test2", response);这个框架不能用
+                          SignHandler.onSignIn(response, mISignListener);
+                      }
+                  })
+                  .error(new IError() {
+                      @Override
+                      public void onError(int code, String msg) {
+                          LatteLogger.i("test", code+msg);
+                      }
+                  })
+                  .failure(new IFailure() {
+                      @Override
+                      public void onFailure() {
+                          LatteLogger.i("test", "失败");
+                      }
+                  })
+                  .build()
+                  .get();
 
+          Toast.makeText(getContext(), "验证通过", Toast.LENGTH_LONG).show();
 
       }
 
