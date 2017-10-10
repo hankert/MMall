@@ -24,6 +24,8 @@ public class ExampleApp extends Application {
                 .withLoaderDelayed(1000)
                 .withApiHost("http://127.0.0.1/")
                 .withInterceptor(new DebugInterceptor("index",R.raw.test))
+                .withWeChatAppId("wx9b10f06dd604f9df")
+                .withWeChatAppSecret("sinobyte888809876543211234567890")
                 .configure();
         initStetho();
         DatabaseManager.getInstance().init(this);

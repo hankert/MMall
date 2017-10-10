@@ -18,6 +18,8 @@ import com.diabin.latte.net.callback.IFailure;
 import com.diabin.latte.net.callback.ISuccess;
 import com.diabin.latte.util.LatteLogger;
 import com.diabin.latte.util.Logger;
+import com.diabin.latte.wechat.LatteWeChat;
+import com.diabin.latte.wechat.callbacks.IWeChatSignInCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -100,10 +102,15 @@ public class SignInDelegate extends LatteDelegate {
         start(new SignUpDelegate());
 
     }
-
+    //微信登录
     @OnClick(R2.id.icon_sign_in_wechat)
     void onClickWeChat(){
-
+        LatteWeChat.getInstance().onSignSuccess(new IWeChatSignInCallback() {
+            @Override
+            public void onSignInSuccess(String userInfo) {
+                Toast.makeText(getContext(), userInfo, Toast.LENGTH_LONG).show();
+            }
+        }).singIn();
 
     }
 

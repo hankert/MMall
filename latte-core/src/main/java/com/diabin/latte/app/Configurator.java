@@ -1,6 +1,8 @@
 package com.diabin.latte.app;
 
 
+import android.app.Activity;
+
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 
@@ -82,6 +84,20 @@ public class Configurator {
         if(!isReady){
             throw new RuntimeException("Configuration is not ready,call configure");
         }
+    }
+
+    public final Configurator withWeChatAppId(String weChatAppId){
+        LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_ID, weChatAppId);
+        return this;
+    }
+    public final Configurator withWeChatAppSecret(String weChatAppSecret){
+        LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_SECRET, weChatAppSecret);
+        return this;
+    }
+
+  public final Configurator withActivity(Activity activity){
+        LATTE_CONFIGS.put(ConfigType.ACTIVITY, activity);
+        return this;
     }
 
 

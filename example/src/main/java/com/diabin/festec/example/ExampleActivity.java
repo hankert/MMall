@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.widget.Toast;
 
 import com.diabin.latte.activities.ProxyActivity;
+import com.diabin.latte.app.Latte;
 import com.diabin.latte.delegates.LatteDelegate;
 import com.diabin.latte.ec.launcher.LauncherDelegate;
 import com.diabin.latte.ec.sign.ISignListener;
@@ -22,6 +23,7 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
         if (actionBar != null){
             actionBar.hide();
         }
+        Latte.getConfigurator().withActivity(this);
     }
 
 

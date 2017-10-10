@@ -1,7 +1,7 @@
 package com.diabin.latte.wechat.templates;
 
-import com.diabin.latte.activities.ProxyActivity;
-import com.diabin.latte.delegates.LatteDelegate;
+import com.diabin.latte.wechat.BaseWXEntryActivity;
+import com.diabin.latte.wechat.LatteWeChat;
 
 /**
  * @auther jh
@@ -9,12 +9,21 @@ import com.diabin.latte.delegates.LatteDelegate;
  * Created by J.H on 2017/10/9.
  */
 
-public class WXEntryTemplate extends ProxyActivity{
-
+public class WXEntryTemplate extends BaseWXEntryActivity{
 
 
     @Override
-    public LatteDelegate setRootDelegate() {
-        return null;
+    protected void onSignInSuccess(String userInfo) {
+
+        LatteWeChat.getInstance().getSignInCallback().onSignInSuccess(userInfo);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        finish();
+        overridePendingTransition(0, 0);
     }
 }
